@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>T-Minus to Doomsday — 100 Marvel Movies Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0D13;
+    --panel:#12161F;
+    --panel-hover:#1B222F;
+    --border:rgba(237,239,244,0.09);
+    --border-strong:rgba(237,239,244,0.18);
+    --text:#EDEFF4;
+    --text-dim:#8991A4;
+    --text-faint:#5B6273;
+    --amber:#FF9142;
+    --teal:#3FD8C4;
+    --teal-dim:rgba(63,216,196,0.14);
+    --blue:#6E9CFF;
+    --violet:#A08CFF;
+    --radius:14px;
+    --font-display:'Big Shoulders Display',sans-serif;
+    --font-body:'Barlow',sans-serif;
+    --font-mono:'JetBrains Mono','Courier New',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    position:relative;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0; z-index:-1;
+    background:
+      radial-gradient(600px 380px at 50% -8%, rgba(255,145,66,0.14), transparent 70%),
+      radial-gradient(520px 420px at 105% 25%, rgba(63,216,196,0.08), transparent 70%);
+    pointer-events:none;
+  }
+  button,input{font:inherit;color:inherit;}
+  :focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px 56px;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:30px 0 0;}
+  .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--amber);
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .hero h1{
+    font-family:var(--font-display);font-weight:800;text-transform:uppercase;
+    font-size:clamp(34px,10vw,54px);line-height:0.94;letter-spacing:-0.01em;
+    margin:10px 0 0;color:var(--text);
+  }
+  .hero h1 .hl{color:var(--amber);}
+  .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0 14px;}
+  .countdown .unit{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px 2px 8px;text-align:center;}
+  .countdown .num{display:block;font-family:var(--font-display);font-weight:700;font-size:clamp(22px,6.5vw,30px);color:var(--text);font-variant-numeric:tabular-nums;line-height:1;}
+  .countdown .lbl{display:block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-top:5px;}
+  .sub{font-family:var(--font-body);font-size:13.5px;color:var(--text-dim);margin:0;}
+
+  /* ---------- Readiness panel ---------- */
+  .readiness{
+    display:flex;align-items:center;gap:16px;
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px;margin-top:22px;
+  }
+  .ring-wrap{position:relative;width:72px;height:72px;flex:none;}
+  .ring-wrap svg{transform:rotate(-90deg);}
+  .ring-track{fill:none;stroke:var(--border-strong);stroke-width:8;}
+  .ring-progress{fill:none;stroke:var(--teal);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .4s ease;}
+  .ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--text);}
+  .readiness .info{flex:1;min-width:0;}
+  .readiness .count{font-family:var(--font-mono);font-size:12.5px;color:var(--text-dim);}
+  .readiness .count strong{color:var(--text);font-size:15px;}
+  .readiness .msg{font-family:var(--font-body);font-weight:600;font-size:14.5px;color:var(--text);margin-top:2px;}
+  .readiness .badge{
+    display:inline-block;margin-top:8px;font-family:var(--font-mono);font-size:11px;
+    color:var(--teal);border:1px solid var(--teal);background:var(--teal-dim);
+    padding:4px 9px;border-radius:999px;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{position:sticky;top:0;z-index:10;background:var(--bg);padding:16px 0 12px;}
+  .search-input{
+    width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--border);
+    border-radius:999px;padding:11px 16px;color:var(--text);font-family:var(--font-body);font-size:14px;
+  }
+  .search-input::placeholder{color:var(--text-faint);}
+  .search-input:focus-visible{outline:none;border-color:var(--teal);}
+  .chips{display:flex;gap:8px;overflow-x:auto;margin-top:10px;padding-bottom:2px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:none;font-family:var(--font-mono);font-size:11px;letter-spacing:0.04em;
+    padding:7px 13px;border-radius:999px;border:1px solid var(--border);
+    background:var(--panel);color:var(--text-dim);cursor:pointer;
+  }
+  .chip[data-active="true"]{background:var(--text);color:var(--bg);border-color:var(--text);}
+
+  /* ---------- Sections ---------- */
+  #sections{margin-top:4px;}
+  .section{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+  .section.open .section-header{border-bottom:1px solid var(--border);}
+  .section-header{
+    all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;
+    width:100%;padding:14px 16px;cursor:pointer;
+  }
+  .code{
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.06em;
+    padding:3px 7px;border-radius:5px;border:1px solid currentColor;flex:none;white-space:nowrap;
+  }
+  .titles{flex:1;min-width:0;text-align:left;}
+  .titles h3{font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:0.01em;text-transform:uppercase;color:var(--text);line-height:1.15;margin:0;}
+  .titles .note{display:block;font-family:var(--font-body);font-size:12px;color:var(--text-faint);margin-top:2px;}
+  .progress-mini{flex:none;text-align:right;}
+  .progress-mini .frac{display:block;font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);}
+  .progress-mini .bar{display:block;width:52px;height:4px;border-radius:2px;background:var(--border-strong);margin-top:5px;overflow:hidden;}
+  .progress-mini .bar i{display:block;height:100%;width:0%;background:var(--teal);transition:width .3s ease;}
+  .chev{flex:none;color:var(--text-faint);transition:transform .25s ease;}
+  .section.open .chev{transform:rotate(180deg);}
+  .section-body{display:none;}
+  .section.open .section-body{display:block;animation:reveal .18s ease;}
+  @keyframes reveal{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+
+  .movie-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-top:1px solid var(--border);cursor:pointer;}
+  .movie-row:hover{background:var(--panel-hover);}
+  .movie-row .idx{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);width:24px;flex:none;}
+  .movie-row input.chk{
+    appearance:none;-webkit-appearance:none;width:20px;height:20px;min-width:20px;
+    border:1.5px solid var(--border-strong);border-radius:5px;background:transparent;
+    display:grid;place-content:center;cursor:pointer;flex:none;
+    transition:background .15s,border-color .15s;
+  }
+  .movie-row input.chk::after{
+    content:'';width:11px;height:11px;background:var(--bg);
+    clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,46% 63%);
+    transform:scale(0);transition:transform .15s;
+  }
+  .movie-row input.chk:checked{background:var(--teal);border-color:var(--teal);}
+  .movie-row input.chk:checked::after{transform:scale(1);}
+  .movie-row .title{flex:1;min-width:0;font-family:var(--font-body);font-size:14.5px;color:var(--text);line-height:1.3;}
+  .movie-row .year{flex:none;font-family:var(--font-mono);font-size:12px;color:var(--text-faint);}
+  .movie-row input.chk:checked ~ .title{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
+  .movie-row input.chk:checked ~ .year{color:var(--text-faint);}
+
+  /* ---------- Footer ---------- */
+  .footer{margin-top:26px;text-align:center;}
+  .footer p{font-family:var(--font-body);font-size:13px;color:var(--text-dim);margin:0 0 14px;}
+  .reset-btn{
+    font-family:var(--font-mono);font-size:12px;color:var(--text-dim);background:transparent;
+    border:1px solid var(--border-strong);border-radius:999px;padding:9px 18px;cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--text-dim);color:var(--text);}
+  .save-note{font-size:11px;color:var(--text-faint);margin-top:12px;}
+  .disclaimer{font-size:11.5px;color:var(--text-faint);margin-top:6px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow"><span class="dot"></span>100-File Watch Protocol</div>
+    <h1>T-Minus to <span class="hl">Doomsday</span></h1>
+
+    <div class="countdown" aria-label="Countdown to Avengers: Doomsday">
+      <div class="unit"><span class="num" id="cd-days">–</span><span class="lbl">Days</span></div>
+      <div class="unit"><span class="num" id="cd-hrs">–</span><span class="lbl">Hrs</span></div>
+      <div class="unit"><span class="num" id="cd-min">–</span><span class="lbl">Min</span></div>
+      <div class="unit"><span class="num" id="cd-sec">–</span><span class="lbl">Sec</span></div>
+    </div>
+    <p class="sub" id="release-sub">Avengers: Doomsday · in theaters December 18, 2026</p>
+
+    <div class="readiness">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 100 100" width="72" height="72">
+          <circle class="ring-track" cx="50" cy="50" r="44"></circle>
+          <circle class="ring-progress" id="ring-progress" cx="50" cy="50" r="44"></circle>
+        </svg>
+        <span class="ring-pct" id="ring-pct">0%</span>
+      </div>
+      <div class="info">
+        <div class="count"><strong id="checked-count">0</strong> of 100 watched</div>
+        <div class="msg" id="readiness-msg">No files reviewed yet.</div>
+        <div class="badge" id="essential-badge" hidden>✓ MCU cleared — ready for Doomsday</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input type="search" id="search" class="search-input" placeholder="Search 100 movies…" aria-label="Search movies">
+    <div class="chips" id="chips" aria-label="Filter by tier">
+      <button type="button" class="chip" data-tier="all" data-active="true">All · 100</button>
+      <button type="button" class="chip" data-tier="essential" data-active="false">Essential · 38</button>
+      <button type="button" class="chip" data-tier="context" data-active="false">Context · 16</button>
+      <button type="button" class="chip" data-tier="extended" data-active="false">Extended · 24</button>
+      <button type="button" class="chip" data-tier="archive" data-active="false">Archive · 22</button>
+    </div>
+  </div>
+
+  <div id="sections"></div>
+
+  <footer class="footer">
+    <p>Up next: <strong>Avengers: Secret Wars</strong>, December 17, 2027.</p>
+    <button type="button" id="reset-btn" class="reset-btn">Reset all progress</button>
+    <p class="save-note" id="save-note"></p>
+    <p class="disclaimer">Fan-made tracker. Not affiliated with Marvel Studios or Disney.</p>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var SECTIONS = [
+    { code:"FILE 01", title:"The Infinity Saga", tier:"essential",
+      note:"Phases One–Three. The saga that built the MCU, cameo by cameo.",
+      movies:[
+        ["Iron Man",2008],["The Incredible Hulk",2008],["Iron Man 2",2010],["Thor",2011],
+        ["Captain America: The First Avenger",2011],["The Avengers",2012],["Iron Man 3",2013],
+        ["Thor: The Dark World",2013],["Captain America: The Winter Soldier",2014],
+        ["Guardians of the Galaxy",2014],["Avengers: Age of Ultron",2015],["Ant-Man",2015],
+        ["Captain America: Civil War",2016],["Doctor Strange",2016],
+        ["Guardians of the Galaxy Vol. 2",2017],["Spider-Man: Homecoming",2017],
+        ["Thor: Ragnarok",2017],["Black Panther",2018],["Avengers: Infinity War",2018],
+        ["Ant-Man and the Wasp",2018],["Captain Marvel",2019],["Avengers: Endgame",2019],
+        ["Spider-Man: Far From Home",2019]
+      ]
+    },
+    { code:"FILE 02", title:"The Multiverse Saga", tier:"essential",
+      note:"Phases Four–Six. Everything since Endgame — required viewing for Doomsday.",
+      movies:[
+        ["Black Widow",2021],["Shang-Chi and the Legend of the Ten Rings",2021],["Eternals",2021],
+        ["Spider-Man: No Way Home",2021],["Doctor Strange in the Multiverse of Madness",2022],
+        ["Thor: Love and Thunder",2022],["Black Panther: Wakanda Forever",2022],
+        ["Ant-Man and the Wasp: Quantumania",2023],["Guardians of the Galaxy Vol. 3",2023],
+        ["The Marvels",2023],["Deadpool & Wolverine",2024],["Captain America: Brave New World",2025],
+        ["Thunderbolts*",2025],["The Fantastic Four: First Steps",2025],
+        ["Spider-Man: Brand New Day",2026]
+      ]
+    },
+    { code:"FILE 03", title:"X-Men Universe", tier:"context",
+      note:"Fox's mutants. Stewart, Romijn and Marsden reprise these roles in Doomsday.",
+      movies:[
+        ["X-Men",2000],["X2: X-Men United",2003],["X-Men: The Last Stand",2006],
+        ["X-Men Origins: Wolverine",2009],["X-Men: First Class",2011],["The Wolverine",2013],
+        ["X-Men: Days of Future Past",2014],["Deadpool",2016],["X-Men: Apocalypse",2016],
+        ["Logan",2017],["Deadpool 2",2018],["Dark Phoenix",2019],["The New Mutants",2020]
+      ]
+    },
+    { code:"FILE 04", title:"Fantastic Four: The Fox Era", tier:"context",
+      note:"Two attempts before Marvel Studios finally got First Steps right.",
+      movies:[
+        ["Fantastic Four",2005],["Fantastic Four: Rise of the Silver Surfer",2007],
+        ["Fantastic Four",2015]
+      ]
+    },
+    { code:"FILE 05", title:"Spider-Man: Raimi & Webb", tier:"extended",
+      note:"Two actors, five films — until No Way Home borrowed them back.",
+      movies:[
+        ["Spider-Man",2002],["Spider-Man 2",2004],["Spider-Man 3",2007],
+        ["The Amazing Spider-Man",2012],["The Amazing Spider-Man 2",2014]
+      ]
+    },
+    { code:"FILE 06", title:"Sony's Spider-Man Universe", tier:"extended",
+      note:"Venom, Morbius and friends: heroes minus the hero.",
+      movies:[
+        ["Venom",2018],["Venom: Let There Be Carnage",2021],["Morbius",2022],
+        ["Madame Web",2024],["Kraven the Hunter",2024],["Venom: The Last Dance",2024]
+      ]
+    },
+    { code:"FILE 07", title:"Spider-Verse", tier:"extended",
+      note:"Animated, multiversal, and arguably the best Spider-Man films made.",
+      movies:[
+        ["Spider-Man: Into the Spider-Verse",2018],["Spider-Man: Across the Spider-Verse",2023]
+      ]
+    },
+    { code:"FILE 08", title:"Blade Trilogy", tier:"extended",
+      note:"The daywalker who proved superhero movies could work, years before X-Men.",
+      movies:[
+        ["Blade",1998],["Blade II",2002],["Blade: Trinity",2004]
+      ]
+    },
+    { code:"FILE 09", title:"Other Heroes: Pre-MCU Era", tier:"extended",
+      note:"Daredevil, Ghost Rider, the Punisher and Hulk, tried and retried.",
+      movies:[
+        ["Daredevil",2003],["Elektra",2005],["Ghost Rider",2007],
+        ["Ghost Rider: Spirit of Vengeance",2011],["The Punisher",1989],["The Punisher",2004],
+        ["Punisher: War Zone",2008],["Hulk",2003]
+      ]
+    },
+    { code:"FILE 10", title:"Marvel Animated Features", tier:"archive",
+      note:"Direct-to-video canon for the deep-cut completionist, 2006–2019.",
+      movies:[
+        ["Ultimate Avengers",2006],["Ultimate Avengers 2",2006],["The Invincible Iron Man",2007],
+        ["Doctor Strange: The Sorcerer Supreme",2007],["Next Avengers: Heroes of Tomorrow",2008],
+        ["Hulk Vs.",2009],["Planet Hulk",2010],["Thor: Tales of Asgard",2011],
+        ["Iron Man: Rise of Technovore",2013],["Iron Man & Hulk: Heroes United",2013],
+        ["Avengers Confidential: Black Widow & Punisher",2014],
+        ["Iron Man and Captain America: Heroes United",2014],
+        ["Marvel Super Hero Adventures: Frost Fight!",2015],["Hulk: Where Monsters Dwell",2016],
+        ["Marvel Rising: Secret Warriors",2018],["Marvel Rising: Chasing Ghosts",2019],
+        ["Marvel Rising: Heart of Iron",2019]
+      ]
+    },
+    { code:"FILE 11", title:"Classified & Curiosities", tier:"archive",
+      note:"Howard the Duck, a 1990 Captain America, and other artifacts.",
+      movies:[
+        ["Howard the Duck",1986],["Captain America",1990],["Man-Thing",2005],
+        ["Nick Fury: Agent of S.H.I.E.L.D.",1998],["Big Hero 6",2014]
+      ]
+    }
+  ];
+
+  var TIER_COLOR = {
+    essential:"var(--amber)",
+    context:"var(--blue)",
+    extended:"var(--violet)",
+    archive:"var(--text-dim)"
+  };
+
+  // Assign stable ids
+  SECTIONS.forEach(function(sec, si){
+    sec.id = "sec" + si;
+    sec.movies = sec.movies.map(function(pair, mi){
+      return { id:"s"+si+"m"+mi, title:pair[0], year:pair[1] };
+    });
+  });
+
+  var TOTAL = SECTIONS.reduce(function(a,s){ return a + s.movies.length; }, 0);
+  var ESSENTIAL_TOTAL = SECTIONS.filter(function(s){ return s.tier==="essential"; })
+    .reduce(function(a,s){ return a + s.movies.length; }, 0);
+
+  var checked = new Set();
+  var expanded = new Set(["sec0","sec1"]);
+  var activeTier = "all";
+  var searchTerm = "";
+  var storageOK = true;
+  var saveTimer = null;
+
+  var sectionsEl = document.getElementById("sections");
+  var globalIndex = 0;
+
+  function buildDOM(){
+    SECTIONS.forEach(function(sec){
+      var secEl = document.createElement("section");
+      secEl.className = "section";
+      secEl.dataset.tier = sec.tier;
+      secEl.dataset.id = sec.id;
+      if (expanded.has(sec.id)) secEl.classList.add("open");
+
+      var header = document.createElement("button");
+      header.type = "button";
+      header.className = "section-header";
+      header.setAttribute("aria-expanded", expanded.has(sec.id) ? "true" : "false");
+      header.setAttribute("aria-controls", "body-" + sec.id);
+      header.innerHTML =
+        '<span class="code" style="color:' + TIER_COLOR[sec.tier] + '">' + sec.code + '</span>' +
+        '<span class="titles"><h3>' + sec.title + '</h3><span class="note">' + sec.note + '</span></span>' +
+        '<span class="progress-mini"><span class="frac" data-frac="' + sec.id + '">0/' + sec.movies.length + '</span>' +
+        '<span class="bar"><i data-bar="' + sec.id + '"></i></span></span>' +
+        '<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
+      header.addEventListener("click", function(){
+        if (expanded.has(sec.id)) expanded.delete(sec.id); else expanded.add(sec.id);
+        applyFilters();
+      });
+
+      var body = document.createElement("div");
+      body.className = "section-body";
+      body.id = "body-" + sec.id;
+
+      sec.movies.forEach(function(m){
+        globalIndex++;
+        var row = document.createElement("label");
+        row.className = "movie-row";
+        row.dataset.title = m.title.toLowerCase();
+
+        var idx = document.createElement("span");
+        idx.className = "idx";
+        idx.textContent = String(globalIndex).padStart(3,"0");
+
+        var chk = document.createElement("input");
+        chk.type = "checkbox";
+        chk.className = "chk";
+        chk.dataset.id = m.id;
+        chk.setAttribute("aria-label", m.title + " (" + m.year + ")");
+
+        var titleSpan = document.createElement("span");
+        titleSpan.className = "title";
+        titleSpan.textContent = m.title;
+
+        var yearSpan = document.createElement("span");
+        yearSpan.className = "year";
+        yearSpan.textContent = m.year;
+
+        row.appendChild(idx);
+        row.appendChild(chk);
+        row.appendChild(titleSpan);
+        row.appendChild(yearSpan);
+        body.appendChild(row);
+      });
+
+      secEl.appendChild(header);
+      secEl.appendChild(body);
+      sectionsEl.appendChild(secEl);
+    });
+
+    sectionsEl.addEventListener("change", function(e){
+      if (e.target && e.target.matches("input.chk")){
+        toggleMovie(e.target.dataset.id);
+      }
+    });
+  }
+
+  function toggleMovie(id){
+    if (checked.has(id)) checked.delete(id); else checked.add(id);
+    scheduleSave();
+    updateProgress();
+  }
+
+  function readinessMessage(pct){
+    if (pct === 0) return "No files reviewed yet.";
+    if (pct < 20) return "Intel gathering has begun.";
+    if (pct < 40) return "Case file building.";
+    if (pct < 60) return "Halfway briefed.";
+    if (pct < 80) return "Approaching full clearance.";
+    if (pct < 100) return "Nearly fully briefed.";
+    return "Full clearance granted. Assemble.";
+  }
+
+  function updateProgress(){
+    var count = checked.size;
+    var pct = TOTAL ? Math.round((count / TOTAL) * 100) : 0;
+
+    document.getElementById("checked-count").textContent = count;
+    document.getElementById("readiness-msg").textContent = readinessMessage(pct);
+    document.getElementById("ring-pct").textContent = pct + "%";
+
+    var ring = document.getElementById("ring-progress");
+    var circumference = 2 * Math.PI * 44;
+    ring.style.strokeDasharray = String(circumference);
+    ring.style.strokeDashoffset = String(circumference * (1 - count / TOTAL));
+
+    var essentialChecked = SECTIONS.filter(function(s){ return s.tier==="essential"; })
+      .reduce(function(a,s){ return a + s.movies.filter(function(m){ return checked.has(m.id); }).length; }, 0);
+    document.getElementById("essential-badge").hidden = essentialChecked < ESSENTIAL_TOTAL;
+
+    SECTIONS.forEach(function(sec){
+      var secChecked = sec.movies.filter(function(m){ return checked.has(m.id); }).length;
+      var fracEl = document.querySelector('[data-frac="' + sec.id + '"]');
+      if (fracEl) fracEl.textContent = secChecked + "/" + sec.movies.length;
+      var barEl = document.querySelector('[data-bar="' + sec.id + '"]');
+      if (barEl) barEl.style.width = (secChecked / sec.movies.length * 100) + "%";
+    });
+  }
+
+  function applyFilters(){
+    var term = searchTerm.trim().toLowerCase();
+    var searching = term.length > 0;
+
+    document.querySelectorAll(".section").forEach(function(secEl){
+      var id = secEl.dataset.id;
+      var tier = secEl.dataset.tier;
+      var rows = secEl.querySelectorAll(".movie-row");
+      var anyMatch = false;
+
+      rows.forEach(function(row){
+        var match = !searching || row.dataset.title.indexOf(term) !== -1;
+        row.style.display = match ? "" : "none";
+        if (match) anyMatch = true;
+      });
+
+      var tierMatch = activeTier === "all" || tier === activeTier;
+      var sectionVisible = tierMatch && (!searching || anyMatch);
+      secEl.style.display = sectionVisible ? "" : "none";
+
+      var shouldOpen = expanded.has(id) || (searching && anyMatch);
+      secEl.classList.toggle("open", shouldOpen);
+      secEl.querySelector(".section-header").setAttribute("aria-expanded", shouldOpen ? "true" : "false");
+    });
+  }
+
+  function updateCountdown(){
+    var target = new Date(2026, 11, 18, 0, 0, 0).getTime();
+    var now = Date.now();
+    var diff = target - now;
+
+    if (diff <= 0){
+      document.getElementById("cd-days").textContent = "0";
+      document.getElementById("cd-hrs").textContent = "00";
+      document.getElementById("cd-min").textContent = "00";
+      document.getElementById("cd-sec").textContent = "00";
+      document.getElementById("release-sub").textContent = "Avengers: Doomsday is out now. Go watch it.";
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    document.getElementById("cd-days").textContent = String(d);
+    document.getElementById("cd-hrs").textContent = String(h).padStart(2,"0");
+    document.getElementById("cd-min").textContent = String(m).padStart(2,"0");
+    document.getElementById("cd-sec").textContent = String(s).padStart(2,"0");
+  }
+
+  function scheduleSave(){
+    if (!storageOK) return;
+    clearTimeout(saveTimer);
+    var noteEl = document.getElementById("save-note");
+    saveTimer = setTimeout(function(){
+      window.storage.set("checked-movies", JSON.stringify(Array.from(checked)))
+        .then(function(){ if (noteEl) { noteEl.textContent = "Progress saved."; setTimeout(function(){ noteEl.textContent=""; }, 1500); } })
+        .catch(function(){ /* will retry on next change */ });
+    }, 400);
+  }
+
+  function loadState(){
+    if (!window.storage){ storageOK = false; return Promise.resolve(); }
+    return window.storage.get("checked-movies")
+      .then(function(res){
+        if (res && res.value){
+          var arr = JSON.parse(res.value);
+          checked = new Set(arr);
+          checked.forEach(function(id){
+            var input = sectionsEl.querySelector('input[data-id="' + id + '"]');
+            if (input) input.checked = true;
+          });
+        }
+      })
+      .catch(function(){ /* no saved state yet — start fresh */ });
+  }
+
+  function wireControls(){
+    document.querySelectorAll(".chip").forEach(function(chip){
+      chip.addEventListener("click", function(){
+        activeTier = chip.dataset.tier;
+        document.querySelectorAll(".chip").forEach(function(c){
+          c.dataset.active = (c === chip) ? "true" : "false";
+        });
+        applyFilters();
+      });
+    });
+
+    var searchInput = document.getElementById("search");
+    searchInput.addEventListener("input", function(){
+      searchTerm = searchInput.value;
+      applyFilters();
+    });
+
+    document.getElementById("reset-btn").addEventListener("click", function(){
+      if (!window.confirm("Reset all watch progress? This can't be undone.")) return;
+      checked.clear();
+      document.querySelectorAll("input.chk").forEach(function(c){ c.checked = false; });
+      updateProgress();
+      if (storageOK){
+        window.storage.set("checked-movies", JSON.stringify([])).catch(function(){});
+      }
+    });
+  }
+
+  // Init
+  buildDOM();
+  applyFilters();
+  updateProgress();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  wireControls();
+  loadState().then(updateProgress);
+
+})();
+</script>
+</body>
+</html>
